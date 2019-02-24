@@ -1,6 +1,7 @@
 
 # centreon_register
 
+[![Build Status](https://travis-ci.org/hdep/puppet-centreon_register.svg?branch=master)](https://travis-ci.org/hdep/puppet-centreon_register)
 
 #### Table of Contents
 
