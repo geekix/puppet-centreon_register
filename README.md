@@ -15,7 +15,8 @@
 
 ## Description
 
-This module permit to register a host to centreon server by using REST API.
+This module permit to register a host to centreon (https://www.centreon.com) server by using REST API.
+The main idea is when a I deploy a new host with puppet, I want to automatically add this host to monitoring with a default host template.
 
 ## Setup
 
