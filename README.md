@@ -25,7 +25,7 @@ The main idea is when a I deploy a new host with puppet, I want to automatically
 This module deploy a bash script into /tmp by default, and install curl if not present.
 This script use curl in order to modify centreon server configuration.
 
-
+The host need access to the Centreon server via http or https.
 
 ### Beginning with centreon_register
 

@@ -4,18 +4,48 @@
 #
 # @example
 #   include centreon_register
+#
+# [*centreon_webapi_host*]
+# URL of centreon Central server
+#
+# [*centreon_webapi_port*]
+# Port number for centreon URL
+#
+# [*centreon_login*]
+# Login to use for API authentification
+#
+# [*centreon_password*]
+# Password to use for API authentification
+#
+# [*host_alias*]
+# Optional host alias to use for this host
+#
+# [*host_template*]
+# host template to use for this host
+#
+# [*host_pooler*]
+# Which pooler should be use for this host
+#
+# [*host_state*]
+# Can be enabled or disabled. Disabled host won't be monitoring
+#
+# [*host_group*]
+# Optional - Which host_group this host should be part of
+#
+# [*script_path*]
+# Where on the system we should deploy the script
+
 class centreon_register (
   String $centreon_webapi_host     = 'http://localhost',
   String $centreon_webapi_port     = '80',
   String $centreon_login           = 'admin',
-  String $centreon_admin_password  = 'p4ssw0rd',
+  String $centreon_password        = 'p4ssw0rd',
   Optional[String] $host_alias     = undef,
   String $host_template            = undef,
   String $host_pooler              = 'Central',
   String $host_state               = 'enabled',
   Optional[String] $host_group     = '',
-  Optional[Hash]   $configuration  = undef,
-  String $script_path = '/tmp',
+  String $script_path              = '/tmp',
 ) {
 
 
