@@ -41,7 +41,7 @@ class centreon_register (
   String $centreon_login           = 'admin',
   String $centreon_password        = 'p4ssw0rd',
   Optional[String] $host_alias     = undef,
-  String $host_template            = undef,
+  Optional[String] $host_template  = undef,
   String $host_pooler              = 'Central',
   String $host_state               = 'enabled',
   Optional[String] $host_group     = '',
