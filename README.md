@@ -41,9 +41,26 @@ class centreon_register {
 
 ## Usage
 
+With Hiera : 
 
+```
+centreon_config::centreon_webapi_host: 'http://centreon.domain.local'
+centreon_config::centreon_admin_password: 'password'
+centreon_config::script_path: '/var/tmp'
+centreon_config::host_template: 'debian'
+```
 
+Or : 
 
+```
+class centreon_register {
+  centreon_webapi_host    => 'http://centreon.domain.fr',
+  centreon_login          => 'admin',
+  centreon_admin_password => 'password'
+  script_path             => '/var/tmp'
+  host_template           => 'debian'
+}
+```
 ## Limitations
 
 Currently the script centreon_register.sh car only create a host with some parameters : hostname, alias, IP, host template, Poller, One custom macro.
