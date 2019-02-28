@@ -44,10 +44,10 @@ class centreon_register {
 With Hiera : 
 
 ```
-centreon_config::centreon_webapi_host: 'http://centreon.domain.local'
-centreon_config::centreon_admin_password: 'password'
-centreon_config::script_path: '/var/tmp'
-centreon_config::host_template: 'debian'
+centreon_register::centreon_webapi_host: 'http://centreon.domain.local'
+centreon_register::centreon_admin_password: 'password'
+centreon_register::script_path: '/var/tmp'
+centreon_register::host_template: 'debian'
 ```
 
 Or : 
