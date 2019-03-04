@@ -54,20 +54,12 @@ class centreon_register (
     ensure  => latest,
   }
 
-  # Create wrapper file
-  file { "${script_path}/wrapper.py":
-    ensure  => absent,
-  }
   file { "${script_path}/centreon_register.sh":
     content => template('centreon_register/centreon_register.sh.erb'),
     mode    => '0700',
     owner   => root,
     group   => root,
     require => Package['curl'],
-  }
-  # Create file config
-  file { "${script_path}/config.yml":
-    ensure  => absent,
   }
 
   exec { 'Apply configuration using wrapper':
