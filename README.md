@@ -35,7 +35,7 @@ Simply declare the class like this and specify mandatory option to reach centreo
 class centreon_register {
   centreon_webapi_host    => 'http://centreon.domain.fr',
   centreon_login          => 'admin',
-  centreon_admin_password => 'password'
+  centreon_admin_password => 'password',
 }
 ```
 
@@ -56,9 +56,9 @@ Or :
 class centreon_register {
   centreon_webapi_host    => 'http://centreon.domain.fr',
   centreon_login          => 'admin',
-  centreon_admin_password => 'password'
-  script_path             => '/var/tmp'
-  host_template           => 'debian'
+  centreon_admin_password => 'password',
+  script_path             => '/var/tmp',
+  host_template           => 'debian',
 }
 ```
 ## Limitations
