@@ -2,7 +2,7 @@
   "name": "romgo-centreon_register",
   "version": "0.1.0",
   "author": "Hugo Deprez",
-  "summary": "",
+  "summary": "Register a host to Centreon",
   "license": "Apache-2.0",
   "source": "https://github.com/hdep/puppet-centreon_register",
   "project_page": "https://github.com/hdep/puppet-centreon_register",
