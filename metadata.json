@@ -55,6 +55,11 @@
       "version_requirement": ">= 4.10.0 < 7.0.0"
     }
   ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/chocolatey", "version_requirement": "3.3.0"
+    }
+  ],
   "pdk-version": "1.9.1",
   "template-url": "file://C:/Program Files/Puppet Labs/DevelopmentKit/share/cache/pdk-templates.git",
   "template-ref": "1.9.1-0-g6945d31"

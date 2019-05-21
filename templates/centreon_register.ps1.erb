@@ -1,0 +1,33 @@
+# FILE MANAGED BY PUPPET
+$LOGIN="<%= @centreon_login %>"
+$PASSWORD="<%= @centreon_password %>"
+$CENTREON_URL="<%= @centreon_webapi_host %>:<%= @centreon_webapi_port %>"
+$HOST_IP="<%= @ipaddress %>"
+$HOST_ALIAS="<%= @host_alias %>"
+$HOST_TEMPLATE="<%= @host_template %>"
+$INSTANCE_NAME="<%= @host_pooler %>"
+$HOST_NAME="<%= @hostname %>"
+
+# GET TOKEN
+$TOKEN=$(curl.exe -s -d "username=${LOGIN}&password=${PASSWORD}" -H "Content-Type: application/x-www-form-urlencoded" -X POST $CENTREON_URL/centreon/api/index.php?action=authenticate | %{$_ -replace "^{`"authToken`":`"",""} | %{$_ -replace "`"}$",""})
+
+# CHECK IF HOST EXIST
+$CHECK_CENTREON=$(curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" --data '{\"action\": \"show\", \"object\": \"host\"}')
+
+if ($CHECK_CENTREON | Select-String -pattern "$HOST_NAME`"")
+{
+   # host already present in centreon so we quit
+   exit 0
+}
+
+# ADD HOST
+curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" -d "{\`"action\`": \`"add\`", \`"object\`": \`"host\`", \`"values\`": \`"$HOST_NAME;$HOST_ALIAS;$HOST_IP;$HOST_TEMPLATE;$INSTANCE_NAME;\`"}"
+
+# Apply template
+curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" -d "{\`"action\`": \`"applytpl\`", \`"object\`": \`"host\`", \`"values\`": \`"$HOST_NAME\`"}"
+
+# SET MACRO
+#curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" -d "{\`"action\`": \`"setmacro\`", \`"object\`": \`"host\`", \`"values\`": \`"$HOST_NAME;$MACRO_NAME;$MACRO_PASSWORD;$MACRO_DESC;\`"}"
+
+# APPLY CONF
+curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" -d "{\`"action\`": \`"applycfg\`",  \`"values\`": \`"$INSTANCE_NAME\`"}"
