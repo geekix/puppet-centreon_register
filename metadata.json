@@ -7,9 +7,6 @@
   "source": "https://github.com/hdep/puppet-centreon_register",
   "project_page": "https://github.com/hdep/puppet-centreon_register",
   "issues_url": "https://github.com/hdep/puppet-centreon_register/issues",
-  "dependencies": [
-
-  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Windows",
