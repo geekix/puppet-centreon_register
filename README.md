@@ -20,12 +20,14 @@ The main idea is when a I deploy a new host with puppet, I want to automatically
 
 ## Setup
 
-### What centreon_register affects **OPTIONAL**
+### What centreon_register affects 
 
-This module deploy a bash script into /tmp by default, and install curl if not present.
+For Linux OS this module deploy a bash script into /tmp by default, and install curl if not present.
 This script use curl in order to modify centreon server configuration.
 
 The host need access to the Centreon server via http or https.
+
+On windows OS, the idea is the same, the module will deploy a powershell script into c:/centreon_register/ and install curl with chocolatey.  
 
 ### Beginning with centreon_register
 
@@ -46,7 +48,7 @@ With Hiera :
 ```
 centreon_register::centreon_webapi_host: 'http://centreon.domain.local'
 centreon_register::centreon_admin_password: 'password'
-centreon_register::script_path: '/var/tmp'
+centreon_register::script_path_linux: '/var/tmp'
 centreon_register::host_template: 'debian'
 ```
 
@@ -57,14 +59,27 @@ class centreon_register {
   centreon_webapi_host    => 'http://centreon.domain.fr',
   centreon_login          => 'admin',
   centreon_admin_password => 'password',
-  script_path             => '/var/tmp',
+  script_path_linux       => '/var/tmp',
   host_template           => 'debian',
 }
 ```
+
+For Windows : 
+
+```
+class centreon_register {
+  centreon_webapi_host    => 'http://centreon.domain.fr',
+  centreon_login          => 'admin',
+  centreon_admin_password => 'password',
+  script_path_windows     => 'c:/centreon_register',
+  host_template           => 'windows',
+}
+```
+
 ## Limitations
 
 Currently the script centreon_register.sh car only create a host with some parameters : hostname, alias, IP, host template, Poller, One custom macro.
-Has been tested with Debian 9 and Redhat 7. Should be working on any OS with curl.
+Has been tested with Debian 9, Redhat 7 and Windows. Should be working on any OS with curl.
 
 ## Development
 
@@ -72,9 +87,8 @@ PR are welcome !
 
 TO DO :
 
-* Support windows OS
 * Add more option to centreon_register.sh
 
-## Release Notes/Contributors/Etc. **Optional**
+## Release Notes/Contributors/Etc. 
 
 Module inspired by  https://github.com/centreon/centreon-iac-puppet-configurator
