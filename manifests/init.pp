@@ -52,8 +52,8 @@ class centreon_register (
   String $script_path_windows      = 'c:/tmp',
 ) {
 
-  case $::osfamily {
-    'Windows':{
+  case $::kernel {
+    'windows':{
       # install requirement for windows script
       package { 'curl':
         ensure   => present,
@@ -75,7 +75,7 @@ class centreon_register (
         require     => Package['curl'],
       }
     }
-    default:{
+    'linux':{
       # install requirement for bash script
       package { 'curl':
         ensure  => present,
@@ -97,6 +97,9 @@ class centreon_register (
           Package['curl']
         ]
       }
+    }
+    default:{
+      fail("Kernel: ${::kernel} not supported in ${module_name}")
     }
   }
 }
