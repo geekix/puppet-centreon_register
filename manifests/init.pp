@@ -32,8 +32,11 @@
 # [*host_group*]
 # Optional - Which host_group this host should be part of
 #
-# [*script_path*]
-# Where on the system we should deploy the script
+# [*script_path_linux*]
+# Where on the system we should deploy the script on Linux system
+#
+# [*script_path_windows*]
+# Where on the system we should deploy the script on Windows system
 
 class centreon_register (
   String $centreon_webapi_host     = 'http://localhost',
@@ -45,7 +48,8 @@ class centreon_register (
   String $host_pooler              = 'Central',
   String $host_state               = 'enabled',
   Optional[String] $host_group     = '',
-  String $script_path              = '/tmp',
+  String $script_path_linux        = '/tmp',
+  String $script_path_windows      = 'c:/tmp',
 ) {
 
   case $::osfamily {
@@ -54,15 +58,15 @@ class centreon_register (
                 ensure   => present,
                 provider => chocolatey,
               }
-              file { "${script_path}/centreon_register.ps1":
+              file { "${script_path_windows}/centreon_register.ps1":
                 content => template('centreon_register/centreon_register.ps1.erb'),
                 require => Package['curl'],
               }
 
               exec { 'Apply configuration using wrapper':
                 path        => 'C:/Windows/System32/WindowsPowerShell/v1.0',
-                command     => "powershell -ExecutionPolicy RemoteSigned -Command \"& ${script_path}/centreon_register.ps1\"",
-                subscribe   => File["${script_path}/centreon_register.ps1"],
+                command     => "powershell -ExecutionPolicy RemoteSigned -Command \"& ${script_path_windows}/centreon_register.ps1\"",
+                subscribe   => File["${script_path_windows}/centreon_register.ps1"],
                 refreshonly => true,
                 # Do not remove the provider line ! For unidentified reasons the script does not work without it
                 provider    => powershell,
@@ -73,7 +77,7 @@ class centreon_register (
               package { 'curl':
                 ensure  => present,
               }
-              file { "${script_path}/centreon_register.sh":
+              file { "${script_path_linux}/centreon_register.sh":
                 content => template('centreon_register/centreon_register.sh.erb'),
                 mode    => '0700',
                 owner   => root,
@@ -82,8 +86,8 @@ class centreon_register (
               }
 
               exec { 'Apply configuration using wrapper':
-                command     => "${script_path}/centreon_register.sh",
-                subscribe   => File["${script_path}/centreon_register.sh"],
+                command     => "${script_path_linux}/centreon_register.sh",
+                subscribe   => File["${script_path_linux}/centreon_register.sh"],
                 refreshonly => true,
                 require     => [
                   Package['curl']
