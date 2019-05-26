@@ -53,46 +53,50 @@ class centreon_register (
 ) {
 
   case $::osfamily {
-    'Windows':{# install requirement for windows script
-              package { 'curl':
-                ensure   => present,
-                provider => chocolatey,
-              }
-              file { "${script_path_windows}/centreon_register.ps1":
-                content => template('centreon_register/centreon_register.ps1.erb'),
-                require => Package['curl'],
-              }
+    'Windows':{
+      # install requirement for windows script
+      package { 'curl':
+        ensure   => present,
+        provider => chocolatey,
+      }
 
-              exec { 'Apply configuration using wrapper':
-                path        => 'C:/Windows/System32/WindowsPowerShell/v1.0',
-                command     => "powershell -ExecutionPolicy RemoteSigned -Command \"& ${script_path_windows}/centreon_register.ps1\"",
-                subscribe   => File["${script_path_windows}/centreon_register.ps1"],
-                refreshonly => true,
-                # Do not remove the provider line ! For unidentified reasons the script does not work without it
-                provider    => powershell,
-                require     => Package['curl'],
-              }
-          }
-    default:{ # install requirement for bash script
-              package { 'curl':
-                ensure  => present,
-              }
-              file { "${script_path_linux}/centreon_register.sh":
-                content => template('centreon_register/centreon_register.sh.erb'),
-                mode    => '0700',
-                owner   => root,
-                group   => root,
-                require => Package['curl'],
-              }
+      file { "${script_path_windows}/centreon_register.ps1":
+        content => template('centreon_register/centreon_register.ps1.erb'),
+        require => Package['curl'],
+      }
 
-              exec { 'Apply configuration using wrapper':
-                command     => "${script_path_linux}/centreon_register.sh",
-                subscribe   => File["${script_path_linux}/centreon_register.sh"],
-                refreshonly => true,
-                require     => [
-                  Package['curl']
-                ]
-              }
+      exec { 'Apply configuration using wrapper':
+        path        => 'C:/Windows/System32/WindowsPowerShell/v1.0',
+        command     => "powershell -ExecutionPolicy RemoteSigned -Command \"& ${script_path_windows}/centreon_register.ps1\"",
+        subscribe   => File["${script_path_windows}/centreon_register.ps1"],
+        refreshonly => true,
+        # Do not remove the provider line ! For unidentified reasons the script does not work without it
+        provider    => powershell,
+        require     => Package['curl'],
+      }
+    }
+    default:{
+      # install requirement for bash script
+      package { 'curl':
+        ensure  => present,
+      }
+
+      file { "${script_path_linux}/centreon_register.sh":
+        content => template('centreon_register/centreon_register.sh.erb'),
+        mode    => '0700',
+        owner   => root,
+        group   => root,
+        require => Package['curl'],
+      }
+
+      exec { 'Apply configuration using wrapper':
+        command     => "${script_path_linux}/centreon_register.sh",
+        subscribe   => File["${script_path_linux}/centreon_register.sh"],
+        refreshonly => true,
+        require     => [
+          Package['curl']
+        ]
+      }
     }
   }
 }
