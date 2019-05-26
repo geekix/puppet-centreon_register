@@ -79,7 +79,12 @@ class centreon_register {
 ## Limitations
 
 Currently the script centreon_register.sh car only create a host with some parameters : hostname, alias, IP, host template, Poller, One custom macro.
-Has been tested with Debian 9, Redhat 7 and Windows. Should be working on any OS with curl.
+Has been tested with :
+ * Debian 9,
+ * Redhat 7 
+ * Windows 2012
+ 
+ Should be working on any OS with curl.
 
 ## Development
 
