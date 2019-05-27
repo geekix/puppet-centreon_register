@@ -48,8 +48,8 @@ class centreon_register (
   String $host_pooler              = 'Central',
   String $host_state               = 'enabled',
   Optional[String] $host_group     = '',
-  String $script_path_linux        = '/tmp',
-  String $script_path_windows      = 'c:/tmp',
+  String $script_path_linux        = '/usr/local/centreon_register',
+  String $script_path_windows      = 'c:/centreon_register',
 ) {
 
   case $::kernel {
@@ -60,9 +60,14 @@ class centreon_register (
         provider => chocolatey,
       }
 
+      file { $script_path_windows:
+        ensure  => directory,
+        require => Package['curl'],
+      }
+
       file { "${script_path_windows}/centreon_register.ps1":
         content => template('centreon_register/centreon_register.ps1.erb'),
-        require => Package['curl'],
+        require => File[$script_path_windows],
       }
 
       exec { 'Apply configuration using wrapper':
@@ -72,7 +77,7 @@ class centreon_register (
         refreshonly => true,
         # Do not remove the provider line ! For unidentified reasons the script does not work without it
         provider    => powershell,
-        require     => Package['curl'],
+        require     => [ Package['curl'], File["${script_path_windows}/centreon_register.ps1"] ]
       }
     }
     'linux':{
@@ -81,21 +86,27 @@ class centreon_register (
         ensure  => present,
       }
 
+      file { $script_path_linux:
+        ensure  => directory,
+        owner   => root,
+        group   => root,
+        mode    => '0755',
+        require => Package['curl'],
+      }
+
       file { "${script_path_linux}/centreon_register.sh":
         content => template('centreon_register/centreon_register.sh.erb'),
         mode    => '0700',
         owner   => root,
         group   => root,
-        require => Package['curl'],
+        require => File[$script_path_linux],
       }
 
       exec { 'Apply configuration using wrapper':
         command     => "${script_path_linux}/centreon_register.sh",
         subscribe   => File["${script_path_linux}/centreon_register.sh"],
         refreshonly => true,
-        require     => [
-          Package['curl']
-        ]
+        require     => [ Package['curl'], File["${script_path_linux}/centreon_register.sh"] ]
       }
     }
     default:{

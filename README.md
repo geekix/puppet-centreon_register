@@ -22,12 +22,14 @@ The main idea is when a I deploy a new host with puppet, I want to automatically
 
 ### What centreon_register affects 
 
-For Linux OS this module deploy a bash script into /tmp by default, and install curl if not present.
+For Linux OS this module deploy a bash script into /usr/local/centreon_register by default, and install curl if not present.
 This script use curl in order to modify centreon server configuration.
 
 The host need access to the Centreon server via http or https.
 
 On windows OS, the idea is the same, the module will deploy a powershell script into c:/centreon_register/ and install curl with chocolatey.  
+
+If you change script_path_linux or script_path_windows puppet will create the last folder. So make sure path exist. 
 
 ### Beginning with centreon_register
 
