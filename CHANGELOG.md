@@ -3,11 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 
-## Release 0.2.1
+## Release 0.3.0
 
 **Features**
 
 * Add windows support
+* Upgrade to PDK 1.10 
 
  
 **Bugfixes**
