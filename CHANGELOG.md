@@ -9,7 +9,8 @@ All notable changes to this project will be documented in this file.
 
 * Add windows support
 * Upgrade to PDK 1.10 
-
+* Change default path for powershell and bash script
+* Ensure puppet create the folder for deploying the script
  
 **Bugfixes**
 
