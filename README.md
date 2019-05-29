@@ -2,6 +2,7 @@
 # centreon_register
 
 [![Build Status](https://travis-ci.org/hdep/puppet-centreon_register.svg?branch=master)](https://travis-ci.org/hdep/puppet-centreon_register)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/hdep/puppet-centreon_register.svg)](https://forge.puppet.com/romgo/centreon_register)
 
 #### Table of Contents
 
