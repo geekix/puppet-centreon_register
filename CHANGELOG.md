@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 0.3.1
+
+**Features**
+
+* Allow host update
+ 
+**Bugfixes**
+
+**Known Issues**
 
 ## Release 0.3.0
 
