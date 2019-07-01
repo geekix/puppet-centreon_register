@@ -17,23 +17,17 @@ TOKEN=$(curl -s \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -X POST ${CENTREON_URL}/centreon/api/index.php?action=authenticate | sed -e 's/^{"authToken":"//' -e 's/"}$//')
 
-# CHECK IF HOST EXIST
-CHECK_CENTREON=$(curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
--H 'Content-Type: application/json' \
--H "centreon-auth-token: $TOKEN" \
---data '{"action":"show", "object":"host"}' | grep -q ${HOSTNAME};echo $?)
-
-if [ $CHECK_CENTREON == 0 ];
-then
-   # host already present in centreon so we quit
-   exit 0
-fi
-
 # ADD HOST
 curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
---data "{\"action\":\"add\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${HOST_ALIAS}";"${HOST_IP}";"${HOST_TEMPLATE}";"${INSTANCE_NAME}";\"}"
+--data "{\"action\":\"add\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${HOST_ALIAS}";"${HOST_IP}";;"${INSTANCE_NAME}";\"}"
+
+# ADD TEMPLATE
+curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+-H 'Content-Type: application/json' \
+-H "centreon-auth-token: $TOKEN" \
+--data "{\"action\":\"addtemplate\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${HOST_TEMPLATE}"\"}"
 
 # Apply template
 curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
