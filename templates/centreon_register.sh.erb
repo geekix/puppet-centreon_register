@@ -15,7 +15,7 @@ MACRO_VALUE=<%= @facts['networking']['primary'] %>
 TOKEN=$(curl -s \
 -d "username=${LOGIN}&password=${PASSWORD}" \
 -H "Content-Type: application/x-www-form-urlencoded" \
--X POST ${CENTREON_URL}/centreon/api/index.php?action=authenticate | sed -e 's/^{"authToken":"//' -e 's/"}$//')
+-X POST ${CENTREON_URL}/centreon/api/index.php?action=authenticate | sed -e 's/^{"authToken":"//' -e 's/"}$//'| sed 's/\\//g')
 
 # ADD HOST
 curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
