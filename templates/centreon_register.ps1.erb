@@ -9,7 +9,7 @@ $INSTANCE_NAME="<%= @host_pooler %>"
 $HOST_NAME="<%= @hostname %>"
 
 # GET TOKEN
-$TOKEN=$(curl.exe -s -d "username=${LOGIN}&password=${PASSWORD}" -H "Content-Type: application/x-www-form-urlencoded" -X POST $CENTREON_URL/centreon/api/index.php?action=authenticate | %{$_ -replace "^{`"authToken`":`"",""} | %{$_ -replace "`"}$",""})
+$TOKEN=$(curl.exe -s -d "username=${LOGIN}&password=${PASSWORD}" -H "Content-Type: application/x-www-form-urlencoded" -X POST $CENTREON_URL/centreon/api/index.php?action=authenticate | %{$_ -replace "^{`"authToken`":`"",""} | %{$_ -replace "`"}$",""}| %{$_ -replace "`\\",""})
 
 # ADD HOST
 curl.exe -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" -H 'Content-Type: application/json' -H "centreon-auth-token: $TOKEN" -d "{\`"action\`": \`"add\`", \`"object\`": \`"host\`", \`"values\`": \`"$HOST_NAME;$HOST_ALIAS;$HOST_IP;;$INSTANCE_NAME;\`"}"
