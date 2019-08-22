@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 0.3.2
+
+**Features**
+
+**Bugfixes**
+
+* Fix curl command to manage token with character like / and \
+
+**Known Issues**
+
 ## Release 0.3.1
 
 **Features**
