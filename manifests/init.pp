@@ -37,6 +37,12 @@
 #
 # [*script_path_windows*]
 # Where on the system we should deploy the script on Windows system
+#
+# [*curl_opts_linux*]
+# Add optional parameters to curl command for linux script
+#
+# [*curl_opts_windows*]
+# Add optional parameters to curl command for windows script
 
 class centreon_register (
   String $centreon_webapi_host     = 'http://localhost',
@@ -50,6 +56,8 @@ class centreon_register (
   Optional[String] $host_group     = '',
   String $script_path_linux        = '/usr/local/centreon_register',
   String $script_path_windows      = 'c:/centreon_register',
+  Optional[String] $curl_opts_linux      = '',
+  Optional[String] $curl_opts_windows    = '',
 ) {
 
   case $::kernel {

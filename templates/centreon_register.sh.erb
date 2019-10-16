@@ -10,39 +10,40 @@ INSTANCE_NAME=<%= @host_pooler %>
 HOST_NAME=<%= @hostname %>
 MACRO_NAME=INTERFACE
 MACRO_VALUE=<%= @facts['networking']['primary'] %>
+CURL_OPTIONS="<%= @curl_opts_linux %>"
 
 # GET TOKEN
-TOKEN=$(curl -s \
+TOKEN=$(curl $CURL_OPTIONS -s \
 -d "username=${LOGIN}&password=${PASSWORD}" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -X POST ${CENTREON_URL}/centreon/api/index.php?action=authenticate | sed -e 's/^{"authToken":"//' -e 's/"}$//'| sed 's/\\//g')
 
 # ADD HOST
-curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+curl $CURL_OPTIONS -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
 --data "{\"action\":\"add\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${HOST_ALIAS}";"${HOST_IP}";;"${INSTANCE_NAME}";\"}"
 
 # ADD TEMPLATE
-curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+curl $CURL_OPTIONS -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
 --data "{\"action\":\"addtemplate\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${HOST_TEMPLATE}"\"}"
 
 # Apply template
-curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+curl $CURL_OPTIONS -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
 --data "{\"action\":\"applytpl\", \"object\":\"host\", \"values\":\""${HOST_NAME}"\"}"
 
 # SET MACRO
-curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+curl $CURL_OPTIONS -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
 --data "{\"action\":\"setmacro\", \"object\":\"host\", \"values\":\""${HOST_NAME}";"${MACRO_NAME}";"${MACRO_VALUE}";"${MACRO_PASSWORD}";"${MACRO_DESC}";\"}"
 
 # APPLY CONF
-curl -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
+curl $CURL_OPTIONS -s "${CENTREON_URL}/centreon/api/index.php?action=action&object=centreon_clapi" \
 -H 'Content-Type: application/json' \
 -H "centreon-auth-token: $TOKEN" \
 --data "{\"action\":\"applycfg\",  \"values\":\""${INSTANCE_NAME}"\"}"

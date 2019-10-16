@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 0.3.3
+
+**Features**
+
+* Add two variable curl_opts_windows and curl_opts_linux in order to allow other options to curl command 
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 0.3.2
 
 **Features**
