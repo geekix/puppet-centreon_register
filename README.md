@@ -78,6 +78,13 @@ class centreon_register {
   host_template           => 'windows',
 }
 ```
+For using curl with insecure mode : 
+
+```
+class centreon_register {
+  curl_opts_linux    => '-k',
+  curl_opts_windows => '-k',
+}
 
 ## Limitations
 
